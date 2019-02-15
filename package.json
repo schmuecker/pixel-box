@@ -13,5 +13,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/schmuto/pixel-box/issues"
+  },
+  "dependencies": {
+    "ws2801-connect": "1.2.2",
+    "rpio": "1.0.13"
   }
 }
