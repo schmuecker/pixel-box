@@ -5,5 +5,5 @@ It runs a Node.js server for controlling it via a web interface and packs some v
 
 # Hardware setup
 
-![LED matrix front view](https://raw.githubusercontent.com/schmuto/pixel-grid/master/docs/img/prototype_v1_front.jpg)
-![LED matrix top view](https://raw.githubusercontent.com/schmuto/pixel-grid/master/docs/img/prototype_v1_top.jpg)
+![LED matrix front view](https://raw.githubusercontent.com/schmuto/pixel-box/master/docs/img/prototype_v1_front.jpg)
+![LED matrix top view](https://raw.githubusercontent.com/schmuto/pixel-box/master/docs/img/prototype_v1_top.jpg)
