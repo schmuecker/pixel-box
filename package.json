@@ -15,7 +15,11 @@
     "url": "https://github.com/schmuto/pixel-box/issues"
   },
   "dependencies": {
-    "ws2801-connect": "1.2.2",
-    "rpio": "1.0.13"
+    "express": "^4.16.4",
+    "get-pixels": "^3.3.2",
+    "gifwrap": "^0.7.5",
+    "jimp": "^0.6.0",
+    "rpio": "1.0.13",
+    "ws2801-connect": "1.2.2"
   }
 }

@@ -1,36 +1,93 @@
-const rpio = require("rpio")
-const WS2801 = require("ws2801-connect")
+const fs = require('fs');
+const path = require('path');
+const getPixels = require('get-pixels');
+const jimp = require('jimp');
+const express = require('express')();
+const config = require('./config');
+const leds = require('./lib/hardware/leds');
+const gif = require('./lib/parser/gif');
 
-// initiate SPI and begin communication
-rpio.spiBegin()
-// max. 25 MHz
-rpio.spiSetClockDivider(128)
-rpio.spiSetDataMode(0)
+const scenes = [
+   {
+      name: 'kaminfeuer',
+      script: path.join(__dirname, 'scenes', 'kaminfeuer.js')
+   }
+]
 
-// the led stripe has 32 lights; supply callback as lambda
-const leds = new WS2801({
-   count: 50, 
-   spiWrite: (data) => { 
-                           let buf = Buffer.from(data)
-                           rpio.spiWrite(buf, buf.length)
-                        }
+express.listen(config.port, () => {
+   console.log(`Server started on port ${config.port}.`);
+});
+
+scenes.forEach(scene => {
+   express.get(`/scene/${scene.name}`, (req, res) => {
+      res.send(scene.script)
+   });
 })
 
-// first make all lights black
-leds.clear().show()
-rpio.sleep(1) // wait a second
-// next fill red
-leds.fill("#FF0000").show()
-rpio.sleep(1)
-// fill green
-leds.fill(0, 255, 0).show()
-rpio.sleep(1)
-// fill blue
-leds.fill([0x00, 0x00, 0xff]).show()
-rpio.sleep(1)
-// and black again
-leds.clear().show()
+express.get('/test', async (req, res) => {
+   const gifPath = path.join(__dirname, 'scenes', '3frames.gif');
+   const gifFrames = await gif.getColorArrayFromGif(gifPath);
+   const resolutionFactorWidth = Math.floor(gifFrames[0].width / config.leds.gridWidth);
+   const resolutionFactorHeight = Math.floor(gifFrames[0].height / config.leds.gridHeight);
 
-// release SPI
-rpio.spiEnd()
+   // Set LED colors
+   for (let j = 0; j < config.leds.gridHeight; j++) {
+      const rowIndex = j * resolutionFactorHeight;
+      for (let i = 0; i < config.leds.gridWidth; i++) {
+         const columnIndex = i * resolutionFactorWidth;
+         leds.setColor(rowIndex, columnIndex, grid[rowIndex][columnIndex]);
+      }
+   }
+   res.send('OK');
+});
 
+
+// GifUtil.read(path.join(__dirname, 'scenes', '3frames.gif')).then(gif => {
+//    gif.frames.forEach(gifFrame => {
+
+//       const pixelColors = JSON.parse(JSON.stringify(gifFrame.bitmap.data)).data;
+//       const colorArray = []
+//       for (let i = 0; i < pixelColors.length; i += 4) {
+//          colorArray.push({
+//             r: pixelColors[i],
+//             g: pixelColors[i + 1],
+//             b: pixelColors[i + 2],
+//             a: pixelColors[i + 3]
+//          })
+//       }
+
+//       const frameWidth = gifFrame.bitmap.width;
+//       const frameHeight = gifFrame.bitmap.height;
+
+//       const grid = [];
+
+//       // Create grid with image size
+//       for (let i = 0; i < frameHeight; i++) {
+//          const row = [];
+//          for (let j = 0; j < frameWidth; j++) {
+//             row.push(undefined);
+//          }
+//          grid.push(row);
+//       }
+
+//       // Set colors from image
+//       colorArray.forEach((colorValue, index) => {
+//          const row = Math.floor(index / frameWidth);
+//          const column = index % frameWidth;
+//          grid[row][column] = colorValue;
+//       })
+
+//       const resolutionFactorWidth = Math.floor(frameWidth / config.leds.gridWidth);
+//       const resolutionFactorHeight = Math.floor(frameHeight / config.leds.gridHeight);
+
+//       // Set LED colors
+//       for (let j = 0; j < config.leds.gridHeight; j++) {
+//          const rowIndex = j * resolutionFactorHeight;
+//          for (let i = 0; i < config.leds.gridWidth; i++) {
+//             const columnIndex = i * resolutionFactorWidth;
+//             leds.setColor(rowIndex, columnIndex, grid[rowIndex][columnIndex]);
+//          }
+//       }
+
+//    })
+// });
