@@ -30,7 +30,7 @@ scenes.forEach(scene => {
 
 express.get('/test', async (req, res) => {
    leds.startLEDControl()
-   const gifPath = path.join(__dirname, 'scenes', 'kaminfeuer.gif');
+   const gifPath = path.join(__dirname, 'scenes', 'kaminfeuer_small.gif');
    const gifFrames = await gif.getColorArrayFromGif(gifPath);
    const resolutionFactorWidth = Math.floor(gifFrames[0].width / config.leds.gridWidth);
    const resolutionFactorHeight = Math.floor(gifFrames[0].height / config.leds.gridHeight);
