@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,10 @@
     "gifwrap": "^0.7.5",
     "jimp": "^0.6.0",
     "rpio": "1.0.13",
+    "telegraf": "^3.28.0",
     "ws2801-connect": "1.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }
