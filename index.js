@@ -36,8 +36,11 @@ express.get('/test', async (req, res) => {
    const resolutionFactorHeight = Math.floor(gifFrames[0].height / config.leds.gridHeight);
 
    // Set LED colors
-   gifFrames.forEach((gifFrame, frameIndex) => {
-      setTimeout(() => {
+   res.send('Starting GIF animation...');
+   while(true) {
+
+      gifFrames.forEach(gifFrame => {
+         
          
          for (let j = 0; j < config.leds.gridHeight; j++) {
             const rowIndex = j * resolutionFactorHeight;
@@ -49,12 +52,12 @@ express.get('/test', async (req, res) => {
             }
          }
          leds.updateLEDsOnPI();
-      }, frameIndex * 100);
-   });
-   setTimeout(() => {
+         
+      });
+   }
+      setTimeout(() => {
       leds.finishLEDControl();
    }, 2000);
-   res.send('OK');
 });
 
 
