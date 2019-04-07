@@ -37,7 +37,9 @@ express.get('/test', async (req, res) => {
       const rowIndex = j * resolutionFactorHeight;
       for (let i = 0; i < config.leds.gridWidth; i++) {
          const columnIndex = i * resolutionFactorWidth;
-         leds.setColor(rowIndex, columnIndex, grid[rowIndex][columnIndex]);
+         if (process.env.PI === "true") {
+            leds.setColor(rowIndex, columnIndex, gifFrames[0].grid[rowIndex][columnIndex]);
+         }
       }
    }
    res.send('OK');
