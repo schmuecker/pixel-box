@@ -6,6 +6,9 @@ const express = require('express')();
 const config = require('./config');
 const leds = require('./lib/hardware/leds');
 const gif = require('./lib/parser/gif');
+const telegram = require('./lib/communication/telegram');
+
+// telegram.start();
 
 const scenes = [
    {
@@ -13,9 +16,8 @@ const scenes = [
       script: path.join(__dirname, 'scenes', 'kaminfeuer.js')
    }
 ]
-
-express.listen(config.port, () => {
-   console.log(`Server started on port ${config.port}.`);
+express.listen(config.server.port, () => {
+   console.log(`Server started on port ${config.server.port}.`);
 });
 
 scenes.forEach(scene => {
