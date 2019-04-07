@@ -48,6 +48,7 @@ express.get('/test', async (req, res) => {
                }
             }
          }
+         leds.updateLEDsOnPI();
       }, frameIndex * 1000);
    });
    setTimeout(() => {
