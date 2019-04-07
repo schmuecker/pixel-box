@@ -40,7 +40,7 @@ express.get('/test', async (req, res) => {
       for (let i = 0; i < config.leds.gridWidth; i++) {
          const columnIndex = i * resolutionFactorWidth;
          if (process.env.PI === "true") {
-            leds.setColor(rowIndex, columnIndex, gifFrames[0].grid[rowIndex][columnIndex]);
+            leds.setColor(j, i, gifFrames[0].grid[rowIndex][columnIndex]);
          }
       }
    }
