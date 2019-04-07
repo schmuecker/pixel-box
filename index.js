@@ -29,6 +29,7 @@ scenes.forEach(scene => {
 })
 
 express.get('/test', async (req, res) => {
+   leds.startLEDControl()
    const gifPath = path.join(__dirname, 'scenes', '3frames.gif');
    const gifFrames = await gif.getColorArrayFromGif(gifPath);
    const resolutionFactorWidth = Math.floor(gifFrames[0].width / config.leds.gridWidth);
@@ -44,6 +45,9 @@ express.get('/test', async (req, res) => {
          }
       }
    }
+   setTimeout(() => {
+      leds.finishLEDControl();
+   }, 2000);
    res.send('OK');
 });
 
