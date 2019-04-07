@@ -16,6 +16,8 @@ const scenes = [
       script: path.join(__dirname, 'scenes', 'kaminfeuer.js')
    }
 ]
+
+console.log('Starting server...')
 express.listen(config.server.port, () => {
    console.log(`Server started on port ${config.server.port}.`);
 });
